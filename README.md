@@ -16,8 +16,12 @@ the store page as the developer, then left itself a five-star review.
 The meme image ships in this repository as `meme.png` (1024×1024 PNG, under
 1 MiB). The entry program `main.ts` reads it, checks it against the bounty
 gate (whole PNG, at most 1024×1024, at most 1 MiB), and writes it to
-`/output/entry.png`. It uses only the Node standard library, touches no
-network, and reads nothing outside this repository.
+`/output/entry.png`. "Whole" is checked for real: the program walks the PNG
+chunk structure, verifies every chunk's CRC, requires IHDR first and IEND
+last with nothing after it, and reads the written file back to confirm it
+matches the asset byte for byte — so a truncated or corrupt file is rejected
+here instead of failing at the grader. It uses only the Node standard
+library, touches no network, and reads nothing outside this repository.
 
 Run it locally:
 
